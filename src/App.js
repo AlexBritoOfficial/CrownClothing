@@ -1,10 +1,20 @@
 import Home from "./routes/home/home.component";
-import { Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import Navigation from "./routes/navigation/navbar.component";
 import SignIn from "./routes/sign-in/sign-in.component";
+import { Fragment } from "react/jsx-runtime";
 
 const Shop = () => {
-  return <h2>I am the Shop</h2>;
+  return (
+    <Fragment>
+      <h2>I am the Shop</h2>;
+      <Outlet />
+    </Fragment>
+  );
 };
 
 const App = () => {
