@@ -115,7 +115,7 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="inverted">Submit</Button>
       </form>
     </div>
   );
