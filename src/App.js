@@ -5,7 +5,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Navigation from "./routes/navigation/navbar.component";
-import SignIn from "./routes/sign-in/sign-in.component";
+import Authentication from "./routes/authentication/authentication.component";
 import { Fragment } from "react/jsx-runtime";
 
 const Shop = () => {
@@ -32,8 +32,8 @@ const App = () => {
           element={<Shop />}
         />
         <Route
-          path="sign-in"
-          element={<SignIn />}
+          path="auth"
+          element={<Authentication />}
         />
       </Route>
     </Routes>
