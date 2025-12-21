@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import FormInput from "../form-input/form-input.component";
 import "./sign-up-container.styles.scss";
 import Button from "../button/button.component";
@@ -34,12 +34,27 @@ const SignUpForm = () => {
   };
 
   const handleChange = (event) => {
+    /*  Use the input's name attribute to update the corresponding 
+        property in formFields with its new value.
+
+        1) event.target gives you the input element that triggered the change
+        2) estructure name (the input's name attribute) and value (what the user typed)
+        3) Use [name] as a computed property key to dynamically update the correct field 
+        in your state object
+        4)The spread operator ...formFields preserves all other fields while updating 
+        just the one that changed
+
+
+     */
+
     const { name, value } = event.target;
 
     setFormFields({
       ...formFields,
       [name]: value,
     });
+
+    console.log(formFields);
   };
 
   const handleSubmit = async (event) => {
@@ -56,8 +71,6 @@ const SignUpForm = () => {
           email,
           password
         );
-
-      console.log(user);
 
       await createUserDocumentFromAuth(user, {
         displayName,
