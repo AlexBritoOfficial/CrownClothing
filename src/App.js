@@ -1,4 +1,5 @@
 import Home from "./routes/home/home.component";
+import Shop from "./routes/shop/shop.component";
 import {
   Routes,
   Route,
@@ -7,15 +8,6 @@ import {
 import Navigation from "./routes/navigation/navbar.component";
 import Authentication from "./routes/authentication/authentication.component";
 import { Fragment } from "react/jsx-runtime";
-
-const Shop = () => {
-  return (
-    <Fragment>
-      <h2>I am the Shop</h2>;
-      <Outlet />
-    </Fragment>
-  );
-};
 
 const App = () => {
   return (
