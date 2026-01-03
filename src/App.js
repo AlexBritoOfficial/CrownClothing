@@ -1,10 +1,6 @@
 import Home from "./routes/home/home.component";
 import Shop from "./routes/shop/shop.component";
-import {
-  Routes,
-  Route,
-  Outlet,
-} from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import Navigation from "./routes/navigation/navbar.component";
 import Authentication from "./routes/authentication/authentication.component";
 import { Fragment } from "react/jsx-runtime";
@@ -21,7 +17,7 @@ const App = () => {
           element={<Home />}
         />
         <Route
-          path="shop"
+          path="shop/*"
           element={<Shop />}
         />
         <Route
