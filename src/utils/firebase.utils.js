@@ -10,24 +10,15 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:
-    "AIzaSyAu2PiH64j533utca6dpwHBAhGC8hseSbM",
-  authDomain:
-    "crwn-clothing-db-b3605.firebaseapp.com",
+  apiKey: "AIzaSyAu2PiH64j533utca6dpwHBAhGC8hseSbM",
+  authDomain: "crwn-clothing-db-b3605.firebaseapp.com",
   projectId: "crwn-clothing-db-b3605",
-  storageBucket:
-    "crwn-clothing-db-b3605.firebasestorage.app",
+  storageBucket: "crwn-clothing-db-b3605.firebasestorage.app",
   messagingSenderId: "478212611877",
-  appId:
-    "1:478212611877:web:0b9dbf462593ca383584cc",
+  appId: "1:478212611877:web:0b9dbf462593ca383584cc",
   measurementId: "G-NQDZM5DZX2",
 };
 
@@ -44,30 +35,45 @@ googleProvider.setCustomParameters({
 export const firebaseAuth = getAuth(firebaseApp);
 
 // Sign In with Popup
-export const signInWithGooglePopUp = () =>
-  signInWithPopup(firebaseAuth, googleProvider);
+export const signInWithGooglePopUp = () => signInWithPopup(firebaseAuth, googleProvider);
 
 // Sign in with Google Redirect
-export const signInWithGoogleRedirect = () =>
-  signInWithRedirect(
-    firebaseAuth,
-    googleProvider
-  );
+export const signInWithGoogleRedirect = () => signInWithRedirect(firebaseAuth, googleProvider);
 
 // Google Firebase Firestore Object
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (
-  userAuth,
-  additionalInformation = {}
-) => {
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
+};
+
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
   if (!userAuth) return;
 
-  const userDocRef = doc(
-    db,
-    "users",
-    userAuth.uid
-  );
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
 
@@ -90,37 +96,22 @@ export const createUserDocumentFromAuth = async (
   return userDocRef;
 };
 
-export const createAuthUserWithEmailAndPassword =
-  async (email, password) => {
-    if (!email || !password) return;
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
 
-    return await createUserWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    );
-  };
+  return await createUserWithEmailAndPassword(firebaseAuth, email, password);
+};
 
-export const signInAuthUserWithEmailAndPasswordForm =
-  async (email, password) => {
-    if (!email || !password) return;
+export const signInAuthUserWithEmailAndPasswordForm = async (email, password) => {
+  if (!email || !password) return;
 
-    return await signInWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    );
-  };
+  return await signInWithEmailAndPassword(firebaseAuth, email, password);
+};
 
 export const signOutUser = async () => {
   await signOut(firebaseAuth);
 };
 
-export const onAuthStateChangedListener = (
-  callback
-) => {
-  return onAuthStateChanged(
-    firebaseAuth,
-    callback
-  );
+export const onAuthStateChangedListener = (callback) => {
+  return onAuthStateChanged(firebaseAuth, callback);
 };
