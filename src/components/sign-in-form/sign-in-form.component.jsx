@@ -19,9 +19,7 @@ const defualtFormFields = {
 };
 
 const SignInForm = () => {
-  const [formFields, setFormFields] = useState(
-    defualtFormFields
-  );
+  const [formFields, setFormFields] = useState(defualtFormFields);
 
   const { email, password } = formFields;
 
@@ -50,8 +48,7 @@ const SignInForm = () => {
     Responsible for logging Google user in.
   */
   const signInWithGoogle = async () => {
-    const { user } =
-      await signInWithGooglePopUp();
+    const { user } = await signInWithGooglePopUp();
   };
 
   /**
@@ -63,11 +60,7 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      const user =
-        await signInAuthUserWithEmailAndPasswordForm(
-          email,
-          password
-        );
+      const user = await signInAuthUserWithEmailAndPasswordForm(email, password);
 
       resetFormFields();
     } catch (error) {
@@ -77,9 +70,7 @@ const SignInForm = () => {
           break;
 
         case "auth/user-not-found":
-          alert(
-            "No user associated with this email"
-          );
+          alert("No user associated with this email");
           break;
 
         default:
@@ -96,9 +87,7 @@ const SignInForm = () => {
   return (
     <div className="sign-up-container">
       <h2>Already have an account?</h2>
-      <span>
-        Sign in with your email and password
-      </span>
+      <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         {/* Email */}
         <FormInput
@@ -121,7 +110,7 @@ const SignInForm = () => {
         />
 
         <div className="buttons-container">
-          <Button type="subnit">Sign In</Button>
+          <Button type="submit">Sign In</Button>
           <Button
             type="button"
             buttonType="google"
