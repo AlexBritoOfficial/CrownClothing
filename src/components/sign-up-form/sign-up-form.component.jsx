@@ -1,11 +1,8 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import FormInput from "../form-input/form-input.component";
-import "./sign-up-container.styles.scss";
 import Button from "../button/button.component";
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth,
-} from "../../utils/firebase.utils";
+import { SignUpContainer } from "./sign-up-container.styles";
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase.utils";
 
 /**
  * DEFAULT FORM FIELDS
@@ -18,16 +15,9 @@ const defualtFormFields = {
 };
 
 const SignUpForm = () => {
-  const [formFields, setFormFields] = useState(
-    defualtFormFields
-  );
+  const [formFields, setFormFields] = useState(defualtFormFields);
 
-  const {
-    displayName,
-    email,
-    password,
-    confirmPassword,
-  } = formFields;
+  const { displayName, email, password, confirmPassword } = formFields;
 
   const resetFormFields = () => {
     setFormFields(defualtFormFields);
@@ -38,13 +28,11 @@ const SignUpForm = () => {
         property in formFields with its new value.
 
         1) event.target gives you the input element that triggered the change
-        2) estructure name (the input's name attribute) and value (what the user typed)
+        2) destructure name (the input's name attribute) and value (what the user typed)
         3) Use [name] as a computed property key to dynamically update the correct field 
         in your state object
-        4)The spread operator ...formFields preserves all other fields while updating 
+        4) The spread operator ...formFields preserves all other fields while updating 
         just the one that changed
-
-
      */
 
     const { name, value } = event.target;
@@ -66,11 +54,7 @@ const SignUpForm = () => {
     }
 
     try {
-      const { user } =
-        await createAuthUserWithEmailAndPassword(
-          email,
-          password
-        );
+      const { user } = await createAuthUserWithEmailAndPassword(email, password);
 
       await createUserDocumentFromAuth(user, {
         displayName,
@@ -82,11 +66,9 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="sign-up-container">
+    <SignUpContainer>
       <h2>Don't have an account?</h2>
-      <span>
-        Sign up with your email and password
-      </span>
+      <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         {/* Display Name */}
         <FormInput
@@ -130,7 +112,7 @@ const SignUpForm = () => {
 
         <Button type="inverted">Submit</Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 
